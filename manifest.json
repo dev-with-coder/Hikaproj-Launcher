@@ -1,0 +1,48 @@
+{
+  "name": "Hikaproj Launcher",
+  "short_name": "Hikaproj",
+  "description": "検索・ブックマーク・RSS をまとめたポータルランチャー",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#f8fafc",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://hikaproj.com/hikaproj-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://hikaproj.com/hikaproj-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "検索",
+      "short_name": "検索",
+      "description": "ウェブを検索",
+      "url": "/?action=search",
+      "icons": [{"src": "https://hikaproj.com/hikaproj-logo.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "ブックマーク",
+      "short_name": "BM",
+      "description": "ブックマークを表示",
+      "url": "/?action=bookmarks",
+      "icons": [{"src": "https://hikaproj.com/hikaproj-logo.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "ニュース",
+      "short_name": "RSS",
+      "description": "RSS ニュースを表示",
+      "url": "/?action=rss",
+      "icons": [{"src": "https://hikaproj.com/hikaproj-logo.png", "sizes": "192x192"}]
+    }
+  ]
+}
