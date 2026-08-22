@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja" class="h-full bg-slate-50 text-slate-800">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>Hikaproj Launcher</title>
+    <meta name="description" content="Hikaprojのホームページ。ガジェット、鯖、ジャンクPCに関する活動や、開発した便利なWebツール、相互リンク、ドメイン一覧、お問い合わせ情報を掲載しています。">
+    <meta name="keywords" content="Hikaproj, ヒカプロ, ガジェット, サーバー, 鯖, ジャンク, Web開発, 自作PC, ポータル"><meta name="author" content="Hikaproj">
+    <meta name="robots" content="index, follow"><link rel="canonical" href="https://hikaproj.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Hikaprojのホームページ">
+    <meta property="og:description" content="ガジェット、鯖、ジャンクに関する活動やWebツールを紹介。">
+    <meta property="og:url" content="https://hikaproj.com/">
+    <meta property="og:site_name" content="Hikaproj">
+    <meta property="og:image" content="https://hikaproj.com/hikaproj-logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@hikaproj">
+    <meta name="twitter:title" content="Hikaprojのホームページ">
+    <meta name="twitter:description" content="Hikaprojの公式ホームページへようこそ！">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Hikaprojのホームページ","url":"https://hikaproj.com/","description":"ガジェット、鯖、ジャンクを愛するHikaprojの公式ウェブサイト。","author":{"@type":"Person","name":"Hikaproj","sameAs":["https://x.com/hikaproj","https://github.com/hikaproj","https://youtube.com/@hikaproj","https://instagram.com/hikaproj"]}}</script>
+    
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/keycloak-js/dist/keycloak.min.js"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],mono:['Fira Code','monospace']},colors:{cf:{orange:'#f38020',blue:'#0051c3',lightbg:'#f8fafc',card:'#ffffff',border:'#e2e8f0'}}}}}</script>
+    <style>body{font-family:'Inter',sans-serif;}.avatar-img{border-radius:9999px;object-fit:cover;width:100%;height:100%;}.profile-link-area{cursor:pointer;transition:background-color 0.15s ease;border-radius:8px;}.profile-link-area:hover{background-color:#f1f5f9;}</style>
+</head>
+<body class="h-full flex flex-col antialiased selection:bg-cf-orange/10 selection:text-cf-orange">
+    <header class="sticky top-0 z-40 w-full border-b border-cf-border bg-white/80 backdrop-blur-md px-4 lg:px-8 py-3 flex items-center justify-between shadow-sm" role="banner">
+        <a href="index.html" class="flex items-center space-x-2">
+            <img src="https://hikaproj.com/hikaproj-logo.png" alt="Hikaproj Logo" class="h-7 w-7 rounded-full object-cover shadow-sm">
+            <span class="font-black text-slate-900 tracking-tight text-base">Hikaproj</span>
+        </a>
+        <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex flex-col justify-center leading-tight text-right mr-2">
+                <div id="realtime-time" class="text-xs font-mono text-slate-900 font-extrabold tracking-wider">00:00:00</div><div id="realtime-date" class="text-[9px] text-slate-500 font-bold mt-0.5">0000年00月00日</div>
+            </div>
+            <nav class="flex items-center space-x-3" aria-label="グローバルナビゲーション">
+
+                <div class="relative">
+                    <button id="user-menu-btn" class="h-8 w-8 rounded-full border border-cf-border flex items-center justify-center text-xs shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cf-orange/50 bg-slate-200 text-slate-500 hover:bg-slate-300 overflow-hidden" aria-haspopup="true" aria-expanded="false" aria-label="User menu">
+                        <img id="user-avatar-img" class="avatar-img hidden" src="" alt="User Avatar">
+                        <i id="user-avatar-icon" class="fa-solid fa-user text-sm"></i>
+                    </button>
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white border border-cf-border rounded-xl shadow-xl py-3 z-50 text-xs">
+                        <div class="px-4 py-2 border-b border-cf-border mb-2">
+                            <p class="font-extrabold text-slate-900 text-sm">Hikaproj Accounts</p>
+                            <p id="user-status-text" class="text-[10px] text-slate-400 mt-0.5">ログインしていません</p>
+                        </div>
+                        <div id="auth-action-area" class="px-3">
+                            <button id="keycloak-login-btn" class="w-full flex items-center justify-center bg-cf-blue hover:bg-cf-blue/90 text-white font-bold py-2 px-3 rounded-lg text-center transition shadow-sm mb-1">
+                                <i class="fa-solid fa-right-to-bracket mr-2"></i>
+                                <span data-i18n="login">ログイン</span>
+                            </button>
+                        </div>
+                        <div id="user-info-area" class="border-t border-cf-border mt-2 pt-2 px-3 hidden">
+                            <div id="profile-link-area" class="profile-link-area flex items-center space-x-3 py-2 px-1">
+                                <div class="h-10 w-10 rounded-full bg-cf-orange text-white flex items-center justify-center font-bold text-sm overflow-hidden flex-shrink-0" id="dropdown-avatar-container">
+                                    <img id="dropdown-avatar-img" class="avatar-img hidden" src="" alt="User Avatar"><span id="dropdown-avatar-initial" class="font-bold text-white">H</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p id="keycloak-username" class="font-semibold text-slate-800 text-sm truncate">Guest</p>
+                                    <p id="keycloak-email" class="text-[10px] text-slate-500 truncate">guest@guest.hp5.top</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
+                            </div>
+                            <button id="keycloak-logout-btn" class="w-full text-left text-slate-500 hover:text-rose-600 font-medium py-1.5 px-1 transition mt-1"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!---->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 lg:p-8 space-y-8">
+        
+            
+            
+        </main>
+        <footer class="w-full border-t border-cf-border bg-white px-4 py-6 text-center text-xs text-slate-500 shadow-inner" role="contentinfo">
+            <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p>© 2026 Hikaproj. All Rights Reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="/" class="hover:text-slate-800 transition" data-i18n="footerHome">ホーム</a>
+                    <a href="/tools/" class="hover:text-slate-800 transition" data-i18n="card_tools_title">ツール</a>
+                    <a href="/slinks/" class="hover:text-slate-800 transition" data-i18n="card_links_title">相互リンク</a>
+                    <a href="https://domains.hikaproj.com/" class="hover:text-slate-800 transition" data-i18n="card_domains_title">ドメイン</a>
+                    <a href="/contact/" class="hover:text-slate-800 transition" data-i18n="card_contact_title">お問い合わせ</a>
+                </div>
+            </div>
+        </footer>
+        <script src="/base/base-1.hikaproj.script.js"></script>
+    </body>
+</html>
