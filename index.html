@@ -1,42 +1,27 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="h-full bg-slate-50 text-slate-800">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <title>Hikaproj Launcher - Your Personal Start Page</title>
-    <meta name="description" content="検索、ブックマーク、RSS、AI チャットを統合したカスタマイズ可能なホームランチャー。PWA 対応でオフライン利用も可能。">
-    <meta name="keywords" content="ランチャー，スタートページ，検索，ブックマーク，RSS,AI,PWA，気象庁，Gemini,OpenAI">
-    <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#4f46e5">
-    <meta name="author" content="Hikaproj">
-    
-    <!-- Open Graph / Facebook -->
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>Hikaproj Launcher</title>
+    <meta name="description" content="Hikaprojのホームページ。ガジェット、鯖、ジャンクPCに関する活動や、開発した便利なWebツール、相互リンク、ドメイン一覧、お問い合わせ情報を掲載しています。">
+    <meta name="keywords" content="Hikaproj, ヒカプロ, ガジェット, サーバー, 鯖, ジャンク, Web開発, 自作PC, ポータル"><meta name="author" content="Hikaproj">
+    <meta name="robots" content="index, follow"><link rel="canonical" href="https://hikaproj.com/">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://hikaproj.github.io/launcher/">
-    <meta property="og:title" content="Hikaproj Launcher - Your Personal Start Page">
-    <meta property="og:description" content="検索、ブックマーク、RSS、AI チャットを統合したカスタマイズ可能なホームランチャー。">
-    <meta property="og:image" content="https://hikaproj.github.io/launcher/og-image.png">
+    <meta property="og:title" content="Hikaprojのホームページ">
+    <meta property="og:description" content="ガジェット、鯖、ジャンクに関する活動やWebツールを紹介。">
+    <meta property="og:url" content="https://hikaproj.com/">
+    <meta property="og:site_name" content="Hikaproj">
+    <meta property="og:image" content="https://hikaproj.com/hikaproj-logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@hikaproj">
+    <meta name="twitter:title" content="Hikaprojのホームページ">
+    <meta name="twitter:description" content="Hikaprojの公式ホームページへようこそ！">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Hikaprojのホームページ","url":"https://hikaproj.com/","description":"ガジェット、鯖、ジャンクを愛するHikaprojの公式ウェブサイト。","author":{"@type":"Person","name":"Hikaproj","sameAs":["https://x.com/hikaproj","https://github.com/hikaproj","https://youtube.com/@hikaproj","https://instagram.com/hikaproj"]}}</script>
     
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://hikaproj.github.io/launcher/">
-    <meta name="twitter:title" content="Hikaproj Launcher - Your Personal Start Page">
-    <meta name="twitter:description" content="検索、ブックマーク、RSS、AI チャットを統合したカスタマイズ可能なホームランチャー。">
-    <meta name="twitter:image" content="https://hikaproj.github.io/launcher/og-image.png">
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://hikaproj.github.io/launcher/">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Hikaproj Launcher">
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon-180x180.png">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -148,17 +133,15 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-100 overflow-x-hidden">
-    
-    <div id="background-layer" class="fixed inset-0 z-0 pointer-events-none"></div>
-    
-    <div class="relative z-10 container mx-auto px-4 py-8 max-w-7xl">
-        
-        <!-- Header -->
-        <header class="flex justify-between items-center mb-8">
-            <div class="flex items-center space-x-3">
-                <i class="fas fa-rocket text-3xl text-primary"></i>
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Hikaproj Launcher</h1>
+<body class="h-full flex flex-col antialiased selection:bg-cf-orange/10 selection:text-cf-orange">
+    <header class="sticky top-0 z-40 w-full border-b border-cf-border bg-white/80 backdrop-blur-md px-4 lg:px-8 py-3 flex items-center justify-between shadow-sm" role="banner">
+        <a href="index.html" class="flex items-center space-x-2">
+            <img src="https://hikaproj.com/hikaproj-logo.png" alt="Hikaproj Logo" class="h-7 w-7 rounded-full object-cover shadow-sm">
+            <span class="font-black text-slate-900 tracking-tight text-base">Hikaproj</span>
+        </a>
+        <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex flex-col justify-center leading-tight text-right mr-2">
+                <div id="realtime-time" class="text-xs font-mono text-slate-900 font-extrabold tracking-wider">00:00:00</div><div id="realtime-date" class="text-[9px] text-slate-500 font-bold mt-0.5">0000年00月00日</div>
             </div>
             <div class="flex items-center space-x-4">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/20 transition-colors">
@@ -414,175 +397,43 @@
                             <button id="export-all-btn" class="bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2 transition-colors">
                                 <i class="fas fa-download mr-1"></i>すべてエクスポート
                             </button>
-                            <button id="export-selected-btn" class="bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2 transition-colors">
-                                <i class="fas fa-download mr-1"></i>選択してエクスポート
-                            </button>
-                            <label class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 cursor-pointer transition-colors">
-                                <i class="fas fa-upload mr-1"></i>インポート
-                                <input type="file" id="import-file" accept=".json" class="hidden">
-                            </label>
                         </div>
-                        <div id="export-options" class="hidden bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
-                            <p class="text-sm font-medium mb-2">エクスポート項目を選択:</p>
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="export-option" value="bookmarks" checked>
-                                    <span>ブックマーク</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="export-option" value="rss" checked>
-                                    <span>RSS</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="export-option" value="ai" checked>
-                                    <span>AI 設定</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="export-option" value="background" checked>
-                                    <span>背景</span>
-                                </label>
-                                <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="export-option" value="search" checked>
-                                    <span>検索履歴</span>
-                                </label>
+                        <div id="user-info-area" class="border-t border-cf-border mt-2 pt-2 px-3 hidden">
+                            <div id="profile-link-area" class="profile-link-area flex items-center space-x-3 py-2 px-1">
+                                <div class="h-10 w-10 rounded-full bg-cf-orange text-white flex items-center justify-center font-bold text-sm overflow-hidden flex-shrink-0" id="dropdown-avatar-container">
+                                    <img id="dropdown-avatar-img" class="avatar-img hidden" src="" alt="User Avatar"><span id="dropdown-avatar-initial" class="font-bold text-white">H</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p id="keycloak-username" class="font-semibold text-slate-800 text-sm truncate">Guest</p>
+                                    <p id="keycloak-email" class="text-[10px] text-slate-500 truncate">guest@guest.hp5.top</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-slate-300 text-[10px]"></i>
                             </div>
-                            <div class="mt-3 flex gap-2">
-                                <button id="confirm-export-btn" class="bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2 text-sm transition-colors">
-                                    エクスポート実行
-                                </button>
-                                <button onclick="document.getElementById('export-options').classList.add('hidden')" class="bg-gray-500 hover:bg-gray-600 text-white rounded-lg px-4 py-2 text-sm transition-colors">
-                                    キャンセル
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <label class="text-sm">インポートモード:</label>
-                            <select id="import-mode" class="bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 text-sm">
-                                <option value="overwrite">上書き</option>
-                                <option value="merge">追加（マージ）</option>
-                                <option value="keep">維持（不足のみ）</option>
-                            </select>
+                            <button id="keycloak-logout-btn" class="w-full text-left text-slate-500 hover:text-rose-600 font-medium py-1.5 px-1 transition mt-1"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</button>
                         </div>
                     </div>
                 </div>
-                
-            </div>
+            </nav>
         </div>
-    </div>
-    
-    <!-- Bookmark Add/Edit Modal -->
-    <div id="bookmark-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeBookmarkModal()"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6">
-            <h3 class="text-xl font-bold mb-4" id="bookmark-modal-title">ブックマークを追加</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">名前</label>
-                    <input type="text" id="bm-title" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">URL</label>
-                    <input type="url" id="bm-url" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">カテゴリ</label>
-                    <input type="text" id="bm-category" list="bm-categories" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                    <datalist id="bm-categories"></datalist>
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button onclick="closeBookmarkModal()" class="bg-gray-500 hover:bg-gray-600 text-white rounded-lg px-4 py-2 transition-colors">キャンセル</button>
-                    <button id="save-bookmark-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-4 py-2 transition-colors">保存</button>
+    </header>
+    <!---->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 lg:p-8 space-y-8">
+        
+            
+            
+        </main>
+        <footer class="w-full border-t border-cf-border bg-white px-4 py-6 text-center text-xs text-slate-500 shadow-inner" role="contentinfo">
+            <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p>© 2026 Hikaproj. All Rights Reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="/" class="hover:text-slate-800 transition" data-i18n="footerHome">ホーム</a>
+                    <a href="/tools/" class="hover:text-slate-800 transition" data-i18n="card_tools_title">ツール</a>
+                    <a href="/slinks/" class="hover:text-slate-800 transition" data-i18n="card_links_title">相互リンク</a>
+                    <a href="https://domains.hikaproj.com/" class="hover:text-slate-800 transition" data-i18n="card_domains_title">ドメイン</a>
+                    <a href="/contact/" class="hover:text-slate-800 transition" data-i18n="card_contact_title">お問い合わせ</a>
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <!-- RSS Feed Modal -->
-    <div id="rss-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeRssModal()"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6">
-            <h3 class="text-xl font-bold mb-4" id="rss-modal-title">RSS フィードを追加</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">名前</label>
-                    <input type="text" id="rss-name" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">URL</label>
-                    <input type="url" id="rss-url" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button onclick="closeRssModal()" class="bg-gray-500 hover:bg-gray-600 text-white rounded-lg px-4 py-2 transition-colors">キャンセル</button>
-                    <button id="save-rss-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-4 py-2 transition-colors">保存</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Provider Modal -->
-    <div id="provider-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeProviderModal()"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6">
-            <h3 class="text-xl font-bold mb-4" id="provider-modal-title">プロバイダを追加</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">名前</label>
-                    <input type="text" id="prov-name" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">タイプ</label>
-                    <select id="prov-type" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                        <option value="gemini">Google Gemini</option>
-                        <option value="openai">OpenAI / 互換</option>
-                        <option value="openrouter">OpenRouter</option>
-                        <option value="groq">Groq</option>
-                        <option value="opencode">OpenCode</option>
-                        <option value="custom">カスタム</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">Base URL</label>
-                    <input type="text" id="prov-baseurl" placeholder="https://api.example.com/v1" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">API Key</label>
-                    <input type="password" id="prov-apikey" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button onclick="closeProviderModal()" class="bg-gray-500 hover:bg-gray-600 text-white rounded-lg px-4 py-2 transition-colors">キャンセル</button>
-                    <button id="save-provider-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-4 py-2 transition-colors">保存</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Model Modal -->
-    <div id="model-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModelModal()"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6">
-            <h3 class="text-xl font-bold mb-4" id="model-modal-title">モデルを追加</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">表示名</label>
-                    <input type="text" id="model-name" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">モデル ID</label>
-                    <input type="text" id="model-id" placeholder="gpt-4o, gemini-1.5-pro, ..." class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">プロバイダ</label>
-                    <select id="model-provider" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                    </select>
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button onclick="closeModelModal()" class="bg-gray-500 hover:bg-gray-600 text-white rounded-lg px-4 py-2 transition-colors">キャンセル</button>
-                    <button id="save-model-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-4 py-2 transition-colors">保存</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script src="/app.js"></script>
-</body>
+        </footer>
+        <script src="/base/base-1.hikaproj.script.js"></script>
+    </body>
 </html>
