@@ -804,6 +804,11 @@ function deleteProvider(id) {
 
 function renderProvidersList() {
   const container = document.getElementById('providers-list');
+  if (STORE.providers.length === 0) {
+    container.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">プロバイダがありません</p>';
+    return;
+  }
+  
   container.innerHTML = STORE.providers.map((p, idx) => `
     <div class="glass-effect rounded-xl p-3 flex justify-between items-center draggable-item" draggable="true" data-idx="${idx}" data-type="provider">
       <div>
@@ -817,8 +822,10 @@ function renderProvidersList() {
         <button onclick="deleteProvider('${p.id}')" class="p-1 hover:bg-red-500/20 text-red-500 rounded"><i class="fas fa-trash"></i></button>
       </div>
     </div>
-  `).join('<p class="text-sm text-gray-500 text-center">ドラッグ＆ドロップは現在サポートされていません。矢印ボタンで並び替えてください。</p>') || 
-    '<p class="text-sm text-gray-500 text-center py-4">プロバイダがありません</p>';
+  `).join('');
+  
+  // Initialize SortableJS after rendering
+  setTimeout(() => setupDragDrop(container, 'provider'), 100);
 }
 
 // Model management
@@ -895,6 +902,11 @@ function deleteModel(id) {
 
 function renderModelsList() {
   const container = document.getElementById('models-list');
+  if (STORE.models.length === 0) {
+    container.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">モデルがありません</p>';
+    return;
+  }
+  
   container.innerHTML = STORE.models.map((m, idx) => {
     const provider = STORE.providers.find(p => p.id === m.providerId);
     return `
@@ -911,7 +923,10 @@ function renderModelsList() {
         </div>
       </div>
     `;
-  }).join('') || '<p class="text-sm text-gray-500 text-center py-4">モデルがありません</p>';
+  });
+  
+  // Initialize SortableJS after rendering
+  setTimeout(() => setupDragDrop(container, 'model'), 100);
 }
 
 // RSS feeds list in settings
@@ -938,46 +953,36 @@ function moveItem(type, idx, delta) {
   else renderModelsList();
 }
 
-// Drag and drop setup
+// Drag and drop setup using SortableJS
 function setupDragDrop(container, type) {
-  let draggedItem = null;
-  
-  container.querySelectorAll('.draggable-item').forEach(item => {
-    item.addEventListener('dragstart', () => {
-      draggedItem = item;
-      item.classList.add('dragging');
-    });
+  // Use SortableJS for better drag and drop experience
+  if (window.Sortable) {
+    const items = container.querySelectorAll('.draggable-item');
+    if (items.length === 0) return;
     
-    item.addEventListener('dragend', () => {
-      draggedItem = null;
-      item.classList.remove('dragging');
-    });
-    
-    item.addEventListener('dragover', e => {
-      e.preventDefault();
-      if (!draggedItem || draggedItem === item) return;
-      
-      const items = Array.from(container.querySelectorAll('.draggable-item'));
-      const draggedIdx = items.indexOf(draggedItem);
-      const targetIdx = items.indexOf(item);
-      
-      const arr = type === 'bookmarks' ? STORE.bookmarks : 
-                  type === 'provider' ? STORE.providers : STORE.models;
-      
-      if (draggedIdx < targetIdx) {
-        container.insertBefore(draggedItem, item.nextSibling);
-        arr.splice(targetIdx + 1, 0, arr.splice(draggedIdx, 1)[0]);
-      } else {
-        container.insertBefore(draggedItem, item);
-        arr.splice(targetIdx, 0, arr.splice(draggedIdx, 1)[0]);
+    Sortable.create(container, {
+      animation: 150,
+      ghostClass: 'opacity-50',
+      dragClass: 'dragging',
+      onEnd: (evt) => {
+        const arr = type === 'bookmarks' ? STORE.bookmarks : 
+                    type === 'provider' ? STORE.providers : STORE.models;
+        
+        const oldIndex = evt.oldIndex;
+        const newIndex = evt.newIndex;
+        
+        if (oldIndex !== newIndex && arr[oldIndex] && arr[newIndex]) {
+          const [removed] = arr.splice(oldIndex, 1);
+          arr.splice(newIndex, 0, removed);
+          saveData();
+          
+          if (type === 'bookmarks') renderBookmarks();
+          else if (type === 'provider') renderProvidersList();
+          else renderModelsList();
+        }
       }
-      
-      saveData();
-      if (type === 'bookmarks') renderBookmarks();
-      else if (type === 'provider') renderProvidersList();
-      else renderModelsList();
     });
-  });
+  }
 }
 
 // Export/Import

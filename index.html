@@ -55,6 +55,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
+    <!-- SortableJS for drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    
     <!-- Marked.js for Markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
@@ -107,6 +110,42 @@
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
         .draggable-item { cursor: grab; }
         .draggable-item:active { cursor: grabbing; }
+        
+        /* Modern search bar styling */
+        .search-container {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .search-container:focus-within {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Glassmorphism enhancements */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass-card {
+            background: rgba(30, 30, 40, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Smooth scrollbars */
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 3px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.3); border-radius: 3px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.5); }
+        
+        /* Animation for new items */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-100 overflow-x-hidden">
@@ -133,10 +172,14 @@
         </header>
         
         <!-- Search Section -->
-        <section id="search-section" class="mb-8">
-            <div class="glass-effect rounded-2xl p-6 max-w-3xl mx-auto">
-                <div class="flex items-center space-x-4 mb-4">
-                    <select id="search-engine" class="bg-white/10 dark:bg-black/20 border border-white/20 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+        <section id="search-section" class="mb-12">
+            <div class="search-container glass-card rounded-3xl p-8 max-w-4xl mx-auto shadow-xl">
+                <div class="flex items-center justify-center mb-6">
+                    <i class="fas fa-search text-3xl text-primary mr-3"></i>
+                    <h2 class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">検索</h2>
+                </div>
+                <div class="flex items-center space-x-4 mb-4 justify-center">
+                    <select id="search-engine" class="bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary font-medium transition-all hover:bg-white/40 dark:hover:bg-black/40">
                         <option value="google">Google</option>
                         <option value="bing">Bing</option>
                         <option value="duckduckgo">DuckDuckGo</option>
@@ -145,30 +188,30 @@
                     </select>
                 </div>
                 <div class="relative">
-                    <input type="text" id="search-input" placeholder="検索..." 
-                           class="w-full bg-white/20 dark:bg-black/30 border border-white/30 rounded-xl px-4 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-primary text-lg">
-                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <button id="search-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/80 text-white rounded-lg px-4 py-2 transition-colors">
+                    <input type="text" id="search-input" placeholder="何を検索しますか？..." 
+                           class="w-full bg-white/40 dark:bg-black/40 border border-white/50 dark:border-white/30 rounded-2xl px-6 py-4 pl-14 focus:outline-none focus:ring-2 focus:ring-primary text-lg shadow-inner transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400">
+                    <i class="fas fa-search absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                    <button id="search-btn" class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl px-6 py-2.5 transition-all shadow-lg hover:shadow-xl font-medium">
                         検索
                     </button>
                 </div>
-                <div id="search-history" class="mt-2 flex flex-wrap gap-2"></div>
+                <div id="search-history" class="mt-4 flex flex-wrap gap-2 justify-center"></div>
             </div>
         </section>
         
         <!-- Greeting & Weather -->
         <section id="greeting-section" class="mb-8">
-            <div class="glass-effect rounded-2xl p-6 max-w-3xl mx-auto">
+            <div class="glass-card rounded-2xl p-6 max-w-3xl mx-auto shadow-lg animate-fade-in-up">
                 <div class="flex justify-between items-center flex-wrap gap-4">
                     <div>
-                        <h2 id="greeting-text" class="text-xl font-semibold mb-1"></h2>
-                        <p id="datetime-text" class="text-gray-600 dark:text-gray-400"></p>
+                        <h2 id="greeting-text" class="text-xl font-semibold mb-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"></h2>
+                        <p id="datetime-text" class="text-gray-600 dark:text-gray-400 font-medium"></p>
                     </div>
-                    <div id="weather-widget" class="flex items-center space-x-3 bg-white/10 dark:bg-black/20 rounded-xl px-4 py-2">
-                        <i class="fas fa-cloud text-2xl text-blue-400"></i>
+                    <div id="weather-widget" class="flex items-center space-x-3 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 dark:from-blue-600/30 dark:to-cyan-600/30 rounded-xl px-5 py-3 shadow-inner border border-white/20">
+                        <i class="fas fa-cloud-sun text-2xl text-blue-500"></i>
                         <div>
-                            <p id="weather-temp" class="font-bold">--°C</p>
-                            <p id="weather-desc" class="text-sm text-gray-600 dark:text-gray-400">--</p>
+                            <p id="weather-temp" class="font-bold text-lg">--°C</p>
+                            <p id="weather-desc" class="text-sm text-gray-600 dark:text-gray-400 font-medium">--</p>
                         </div>
                     </div>
                 </div>
@@ -177,13 +220,15 @@
         
         <!-- Bookmarks Section -->
         <section id="bookmarks-section" class="mb-8">
-            <div class="glass-effect rounded-2xl p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold"><i class="fas fa-bookmark mr-2"></i>ブックマーク</h3>
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up">
+                <div class="flex justify-between items-center mb-6 flex-wrap gap-3">
+                    <h3 class="text-lg font-semibold flex items-center text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-bookmark mr-2 text-primary"></i>ブックマーク
+                    </h3>
                     <div class="flex items-center space-x-2">
                         <input type="text" id="bookmark-search" placeholder="ブックマーク検索..." 
-                               class="bg-white/10 dark:bg-black/20 border border-white/20 rounded-lg px-3 py-1 text-sm focus:outline-none">
-                        <button id="add-bookmark-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-3 py-1 text-sm transition-colors">
+                               class="bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all w-48">
+                        <button id="add-bookmark-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl px-4 py-2 text-sm transition-all shadow-lg hover:shadow-xl flex items-center">
                             <i class="fas fa-plus mr-1"></i>追加
                         </button>
                     </div>
@@ -195,42 +240,46 @@
         
         <!-- RSS Section -->
         <section id="rss-section" class="mb-8">
-            <div class="glass-effect rounded-2xl p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold"><i class="fas fa-rss mr-2"></i>ニュース</h3>
-                    <button id="manage-rss-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-3 py-1 text-sm transition-colors">
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up">
+                <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
+                    <h3 class="text-lg font-semibold flex items-center text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-rss mr-2 text-orange-500"></i>ニュース
+                    </h3>
+                    <button id="manage-rss-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl px-4 py-2 text-sm transition-all shadow-lg hover:shadow-xl flex items-center">
                         <i class="fas fa-cog mr-1"></i>管理
                     </button>
                 </div>
                 <div id="rss-tabs" class="flex flex-wrap gap-2 mb-4"></div>
-                <div id="rss-content" class="space-y-3 max-h-96 overflow-y-auto scrollbar-thin">
+                <div id="rss-content" class="space-y-3 max-h-96 overflow-y-auto scrollbar-thin pr-2">
                 </div>
             </div>
         </section>
         
         <!-- AI Chat Section -->
         <section id="ai-section" class="mb-8">
-            <div class="glass-effect rounded-2xl p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold"><i class="fas fa-robot mr-2"></i>AI チャット</h3>
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up">
+                <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
+                    <h3 class="text-lg font-semibold flex items-center text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-robot mr-2 text-purple-500"></i>AI チャット
+                    </h3>
                     <div class="flex items-center space-x-2">
-                        <select id="ai-model-select" class="bg-white/10 dark:bg-black/20 border border-white/20 rounded-lg px-3 py-1 text-sm focus:outline-none">
+                        <select id="ai-model-select" class="bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all">
                         </select>
-                        <button id="new-chat-btn" class="bg-secondary hover:bg-secondary/80 text-white rounded-lg px-3 py-1 text-sm transition-colors">
+                        <button id="new-chat-btn" class="bg-gradient-to-r from-secondary to-purple-600 hover:from-secondary/90 hover:to-purple-600/90 text-white rounded-xl px-4 py-2 text-sm transition-all shadow-lg hover:shadow-xl flex items-center">
                             <i class="fas fa-plus mr-1"></i>新規
                         </button>
                     </div>
                 </div>
-                <div id="chat-messages" class="h-96 overflow-y-auto scrollbar-thin mb-4 space-y-3 p-4 bg-white/5 dark:bg-black/20 rounded-xl">
+                <div id="chat-messages" class="h-96 overflow-y-auto scrollbar-thin mb-4 space-y-3 p-4 bg-white/20 dark:bg-black/30 rounded-xl pr-2">
                     <div class="text-center text-gray-500 dark:text-gray-400 mt-20">
-                        <i class="fas fa-comments text-4xl mb-2"></i>
+                        <i class="fas fa-comments text-4xl mb-2 opacity-50"></i>
                         <p>AI チャットを開始するには、メッセージを入力してください</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <textarea id="chat-input" placeholder="メッセージを入力..." rows="2"
-                              class="flex-1 bg-white/20 dark:bg-black/30 border border-white/30 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary resize-none"></textarea>
-                    <button id="chat-send-btn" class="bg-primary hover:bg-primary/80 text-white rounded-xl px-4 py-2 transition-colors">
+                    <textarea id="chat-input" placeholder="メッセージを入力... (Shift+Enter で改行)" rows="2"
+                              class="flex-1 bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary resize-none transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400"></textarea>
+                    <button id="chat-send-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl px-5 py-3 transition-all shadow-lg hover:shadow-xl flex-shrink-0">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
