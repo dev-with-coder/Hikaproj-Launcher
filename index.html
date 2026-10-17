@@ -23,14 +23,115 @@
     
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/keycloak-js/dist/keycloak.min.js"></script>
-    <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],mono:['Fira Code','monospace']},colors:{cf:{orange:'#f38020',blue:'#0051c3',lightbg:'#f8fafc',card:'#ffffff',border:'#e2e8f0'}}}}}</script>
-    <style>body{font-family:'Inter',sans-serif;}.avatar-img{border-radius:9999px;object-fit:cover;width:100%;height:100%;}.profile-link-area{cursor:pointer;transition:background-color 0.15s ease;border-radius:8px;}.profile-link-area:hover{background-color:#f1f5f9;}</style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#7c3aed'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- SortableJS for drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Highlight.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Hikaproj Launcher",
+        "url": "https://hikaproj.github.io/launcher/",
+        "description": "検索、ブックマーク、RSS、AI チャットを統合したカスタマイズ可能なホームランチャー。",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY"
+        },
+        "featureList": "Search, Bookmarks, RSS Reader, AI Chat, Weather, PWA"
+    }
+    </script>
+    
+    <style>
+        body { transition: background 0.3s ease; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass-effect {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bookmark-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 3px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.3); border-radius: 3px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.5); }
+        .dragging { opacity: 0.5; transform: scale(1.05); }
+        @keyframes pulse-dot { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        .typing-indicator span { animation: pulse-dot 1.4s infinite; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        .draggable-item { cursor: grab; }
+        .draggable-item:active { cursor: grabbing; }
+        
+        /* Modern search bar styling */
+        .search-container {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .search-container:focus-within {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Glassmorphism enhancements */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass-card {
+            background: rgba(30, 30, 40, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Smooth scrollbars */
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 3px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.3); border-radius: 3px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.5); }
+        
+        /* Animation for new items */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+    </style>
 </head>
 <body class="h-full flex flex-col antialiased selection:bg-cf-orange/10 selection:text-cf-orange">
     <header class="sticky top-0 z-40 w-full border-b border-cf-border bg-white/80 backdrop-blur-md px-4 lg:px-8 py-3 flex items-center justify-between shadow-sm" role="banner">
@@ -42,22 +143,259 @@
             <div class="hidden sm:flex flex-col justify-center leading-tight text-right mr-2">
                 <div id="realtime-time" class="text-xs font-mono text-slate-900 font-extrabold tracking-wider">00:00:00</div><div id="realtime-date" class="text-[9px] text-slate-500 font-bold mt-0.5">0000年00月00日</div>
             </div>
-            <nav class="flex items-center space-x-3" aria-label="グローバルナビゲーション">
-
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/20 transition-colors">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+                <button id="settings-btn" class="p-2 rounded-full hover:bg-white/20 transition-colors">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Search Section -->
+        <section id="search-section" class="mb-12">
+            <div class="search-container glass-card rounded-3xl p-8 max-w-4xl mx-auto shadow-xl">
+                <div class="flex items-center justify-center mb-6">
+                    <i class="fas fa-search text-3xl text-primary mr-3"></i>
+                    <h2 class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">検索</h2>
+                </div>
+                <div class="flex items-center space-x-4 mb-4 justify-center">
+                    <select id="search-engine" class="bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary font-medium transition-all hover:bg-white/40 dark:hover:bg-black/40">
+                        <option value="google">Google</option>
+                        <option value="bing">Bing</option>
+                        <option value="duckduckgo">DuckDuckGo</option>
+                        <option value="brave">Brave</option>
+                        <option value="yahoo">Yahoo! JAPAN</option>
+                    </select>
+                </div>
                 <div class="relative">
-                    <button id="user-menu-btn" class="h-8 w-8 rounded-full border border-cf-border flex items-center justify-center text-xs shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cf-orange/50 bg-slate-200 text-slate-500 hover:bg-slate-300 overflow-hidden" aria-haspopup="true" aria-expanded="false" aria-label="User menu">
-                        <img id="user-avatar-img" class="avatar-img hidden" src="" alt="User Avatar">
-                        <i id="user-avatar-icon" class="fa-solid fa-user text-sm"></i>
+                    <input type="text" id="search-input" placeholder="何を検索しますか？..." 
+                           class="w-full bg-white/40 dark:bg-black/40 border border-white/50 dark:border-white/30 rounded-2xl px-6 py-4 pl-14 focus:outline-none focus:ring-2 focus:ring-primary text-lg shadow-inner transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400">
+                    <i class="fas fa-search absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                    <button id="search-btn" class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl px-6 py-2.5 transition-all shadow-lg hover:shadow-xl font-medium">
+                        検索
                     </button>
-                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white border border-cf-border rounded-xl shadow-xl py-3 z-50 text-xs">
-                        <div class="px-4 py-2 border-b border-cf-border mb-2">
-                            <p class="font-extrabold text-slate-900 text-sm">Hikaproj Accounts</p>
-                            <p id="user-status-text" class="text-[10px] text-slate-400 mt-0.5">ログインしていません</p>
+                </div>
+                <div id="search-history" class="mt-4 flex flex-wrap gap-2 justify-center"></div>
+            </div>
+        </section>
+        
+        <!-- Greeting & Weather -->
+        <section id="greeting-section" class="mb-8">
+            <div class="glass-card rounded-2xl p-6 max-w-3xl mx-auto shadow-lg animate-fade-in-up">
+                <div class="flex justify-between items-center flex-wrap gap-4">
+                    <div>
+                        <h2 id="greeting-text" class="text-xl font-semibold mb-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"></h2>
+                        <p id="datetime-text" class="text-gray-600 dark:text-gray-400 font-medium"></p>
+                    </div>
+                    <div id="weather-widget" class="flex items-center space-x-3 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 dark:from-blue-600/30 dark:to-cyan-600/30 rounded-xl px-5 py-3 shadow-inner border border-white/20">
+                        <i class="fas fa-cloud-sun text-2xl text-blue-500"></i>
+                        <div>
+                            <p id="weather-temp" class="font-bold text-lg">--°C</p>
+                            <p id="weather-desc" class="text-sm text-gray-600 dark:text-gray-400 font-medium">--</p>
                         </div>
-                        <div id="auth-action-area" class="px-3">
-                            <button id="keycloak-login-btn" class="w-full flex items-center justify-center bg-cf-blue hover:bg-cf-blue/90 text-white font-bold py-2 px-3 rounded-lg text-center transition shadow-sm mb-1">
-                                <i class="fa-solid fa-right-to-bracket mr-2"></i>
-                                <span data-i18n="login">ログイン</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Bookmarks Section -->
+        <section id="bookmarks-section" class="mb-8">
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up">
+                <div class="flex justify-between items-center mb-6 flex-wrap gap-3">
+                    <h3 class="text-lg font-semibold flex items-center text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-bookmark mr-2 text-primary"></i>ブックマーク
+                    </h3>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="bookmark-search" placeholder="ブックマーク検索..." 
+                               class="bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all w-48">
+                        <button id="add-bookmark-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl px-4 py-2 text-sm transition-all shadow-lg hover:shadow-xl flex items-center">
+                            <i class="fas fa-plus mr-1"></i>追加
+                        </button>
+                    </div>
+                </div>
+                <div id="bookmarks-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                </div>
+            </div>
+        </section>
+        
+        <!-- RSS Section -->
+        <section id="rss-section" class="mb-8">
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up">
+                <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
+                    <h3 class="text-lg font-semibold flex items-center text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-rss mr-2 text-orange-500"></i>ニュース
+                    </h3>
+                    <button id="manage-rss-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl px-4 py-2 text-sm transition-all shadow-lg hover:shadow-xl flex items-center">
+                        <i class="fas fa-cog mr-1"></i>管理
+                    </button>
+                </div>
+                <div id="rss-tabs" class="flex flex-wrap gap-2 mb-4"></div>
+                <div id="rss-content" class="space-y-3 max-h-96 overflow-y-auto scrollbar-thin pr-2">
+                </div>
+            </div>
+        </section>
+        
+        <!-- AI Chat Section -->
+        <section id="ai-section" class="mb-8">
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up">
+                <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
+                    <h3 class="text-lg font-semibold flex items-center text-gray-800 dark:text-gray-100">
+                        <i class="fas fa-robot mr-2 text-purple-500"></i>AI チャット
+                    </h3>
+                    <div class="flex items-center space-x-2">
+                        <select id="ai-model-select" class="bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all">
+                        </select>
+                        <button id="new-chat-btn" class="bg-gradient-to-r from-secondary to-purple-600 hover:from-secondary/90 hover:to-purple-600/90 text-white rounded-xl px-4 py-2 text-sm transition-all shadow-lg hover:shadow-xl flex items-center">
+                            <i class="fas fa-plus mr-1"></i>新規
+                        </button>
+                    </div>
+                </div>
+                <div id="chat-messages" class="h-96 overflow-y-auto scrollbar-thin mb-4 space-y-3 p-4 bg-white/20 dark:bg-black/30 rounded-xl pr-2">
+                    <div class="text-center text-gray-500 dark:text-gray-400 mt-20">
+                        <i class="fas fa-comments text-4xl mb-2 opacity-50"></i>
+                        <p>AI チャットを開始するには、メッセージを入力してください</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <textarea id="chat-input" placeholder="メッセージを入力... (Shift+Enter で改行)" rows="2"
+                              class="flex-1 bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary resize-none transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400"></textarea>
+                    <button id="chat-send-btn" class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl px-5 py-3 transition-all shadow-lg hover:shadow-xl flex-shrink-0">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+    
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeSettingsModal()"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl max-h-[80vh] overflow-y-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
+            <div class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex justify-between items-center">
+                <h2 class="text-xl font-bold">設定</h2>
+                <button onclick="closeSettingsModal()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-6">
+                
+                <!-- Visibility Settings -->
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h3 class="text-lg font-semibold mb-3">表示設定</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="vis-search" class="rounded text-primary focus:ring-primary">
+                            <span>検索</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="vis-bookmarks" class="rounded text-primary focus:ring-primary">
+                            <span>ブックマーク</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="vis-rss" class="rounded text-primary focus:ring-primary">
+                            <span>RSS</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="vis-weather" class="rounded text-primary focus:ring-primary">
+                            <span>天気</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="vis-ai" class="rounded text-primary focus:ring-primary">
+                            <span>AI チャット</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Background Settings -->
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h3 class="text-lg font-semibold mb-3">背景設定</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">画像 URL</label>
+                            <input type="text" id="bg-url" placeholder="https://example.com/image.jpg" 
+                                   class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">画像をアップロード</label>
+                            <input type="file" id="bg-file" accept="image/*" 
+                                   class="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary file:text-white hover:file:bg-primary/80">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">透明度：<span id="opacity-value">0.8</span></label>
+                            <input type="range" id="bg-opacity" min="0" max="1" step="0.1" value="0.8" 
+                                   class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">ぼかし：<span id="blur-value">5</span></label>
+                            <input type="range" id="bg-blur" min="0" max="20" step="1" value="5" 
+                                   class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weather Settings -->
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h3 class="text-lg font-semibold mb-3">天気設定</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">提供元</label>
+                            <select id="weather-provider" class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="openmeteo">Open-Meteo (全球)</option>
+                                <option value="jma">気象庁 (日本)</option>
+                            </select>
+                        </div>
+                        <div id="jma-location-setting" class="hidden">
+                            <label class="block text-sm font-medium mb-1">地点コードまたは緯度経度</label>
+                            <input type="text" id="jma-location" placeholder="例：130000 または 35.6895,139.6917" 
+                                   class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI Provider Settings -->
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-lg font-semibold">AI プロバイダ設定</h3>
+                        <button id="add-provider-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-3 py-1 text-sm transition-colors">
+                            <i class="fas fa-plus mr-1"></i>追加
+                        </button>
+                    </div>
+                    <div id="providers-list" class="space-y-3"></div>
+                </div>
+                
+                <!-- AI Model Settings -->
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-lg font-semibold">AI モデル設定</h3>
+                        <button id="add-model-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-3 py-1 text-sm transition-colors">
+                            <i class="fas fa-plus mr-1"></i>追加
+                        </button>
+                    </div>
+                    <div id="models-list" class="space-y-3"></div>
+                </div>
+                
+                <!-- RSS Settings -->
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-lg font-semibold">RSS フィード設定</h3>
+                        <button id="add-rss-btn" class="bg-primary hover:bg-primary/80 text-white rounded-lg px-3 py-1 text-sm transition-colors">
+                            <i class="fas fa-plus mr-1"></i>追加
+                        </button>
+                    </div>
+                    <div id="rss-feeds-list" class="space-y-3"></div>
+                </div>
+                
+                <!-- Data Management -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-3">データ管理</h3>
+                    <div class="space-y-3">
+                        <div class="flex flex-wrap gap-2">
+                            <button id="export-all-btn" class="bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2 transition-colors">
+                                <i class="fas fa-download mr-1"></i>すべてエクスポート
                             </button>
                         </div>
                         <div id="user-info-area" class="border-t border-cf-border mt-2 pt-2 px-3 hidden">
